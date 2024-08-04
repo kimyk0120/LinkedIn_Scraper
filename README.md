@@ -1,8 +1,6 @@
 # LinkedIn_Scraper
 
 
-
-
 ---
 ### DONE
 - 프로젝트 init 
