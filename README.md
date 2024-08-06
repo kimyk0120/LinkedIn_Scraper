@@ -24,4 +24,5 @@ $ npx tailwindcss -i ./static/src/input.css -o ./static/src/output.css
 - 인덱스 페이지 디자인
 
 
-
+### Trouble Shooting
+- https://velog.io/@awo3sr/TIL-17-%ED%8C%8C%EC%9D%B4%EC%B0%B8-x-windows-949-%EC%98%A4%EB%A5%98
