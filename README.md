@@ -7,9 +7,9 @@
 
 ---
 
-- tailwindcss 컴파일 및 watch
+- tailwindcss 컴파일 및 빌드 
 ```bash
-$ npx tailwindcss -i ./static/src/input.css -o ./static/src/output.css
+$ npx tailwindcss -i ./static/src/input.css -o ./static/src/output.css --watch
 ```
 
 ---
