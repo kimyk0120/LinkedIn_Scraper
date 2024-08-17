@@ -26,18 +26,20 @@ tailwindcss 3.0.0
 ```
 
 # How to Run 
-### Install Requirements
+
+- Clone the repository
+- Install Requirements
 ```bash
 $ pip install -r requirements.txt
 ```
-### Run Django Server
+-  Run Django Server
 ```bash
 $ python manage.py runserver
 ```
 
-### Tailwind Build (for development)
+- Tailwind Build (for development)
 ```bash
-$ npx tailwindcss -i ./src/input.css -o ./src/output.css --watch
+$ npx tailwindcss -i ./static/src/input.css -o ./static/src/output.css --watch
 ```
 
 ---
