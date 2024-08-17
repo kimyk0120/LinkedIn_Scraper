@@ -7,7 +7,6 @@ from selenium.webdriver.common.by import By
 # selenium으로 키를 조작하기 위한 import
 from selenium.webdriver.common.keys import Keys
 
-
 def chrome(headless=False):
     opt = webdriver.ChromeOptions()
     if headless:
@@ -18,17 +17,18 @@ def chrome(headless=False):
     browser.implicitly_wait(10)
     return browser
 
+
 def scraper():
-    global contacts
+
     print("Hello World")
 
-    test_url = "https://www.linkedin.com/in/youngkwang-kim-360739244/?locale=en_US"
+    test_url = "https://www.linkedin.com/in/suwaidaslam/"
     print("Test URL: {}".format(test_url))
 
     browser = chrome(False)
 
     # 로그인
-    browser.set_window_position(2048, 0) # 우측 세컨 모니터를 이용하기 위해 왼쪽 메인 모니터 width 만큼 이동
+    browser.set_window_position(2048, 0)  # 우측 세컨 모니터를 이용하기 위해 왼쪽 메인 모니터 width 만큼 이동
     browser.maximize_window()
 
     browser.get('https://www.linkedin.com/uas/login')
@@ -36,7 +36,7 @@ def scraper():
 
     # 로그인 정보가 담긴 파일을 읽어서 로그인
     # TODO 이 부분은 UI에서 어떻게 해야할지 고민 필요
-    file = open('config/login.txt') # 로그인 정보가 담긴 파일
+    file = open('config/login.txt')  # 로그인 정보가 담긴 파일
     lines = file.readlines()
     username = lines[0]
     password = lines[1]
@@ -67,10 +67,10 @@ def scraper():
 
     # profile image url
     try:
-        profile_img = soup.find('div', {'class': 'pv-top-card__photo-wrapper'}).find('img')['src']
+        profile_img = soup.select('section.artdeco-card')[0].select('img')[1]['src']
         print("profile image url: {}".format(profile_img))
     except Exception as e:
-        print(e)
+        print("error getting profile image url: {}".format(e))
         profile = None
 
     # Get Name of the person
@@ -78,28 +78,20 @@ def scraper():
         first_last_name = soup.select('section.artdeco-card')[0].select('h1')[0].get_text().strip()
         print("Name: {}".format(first_last_name))
     except Exception as e:
-        print(e)
+        print("error getting name: {}".format(e))
         first_last_name = None
 
-    # 한줄 프로필
+    # Get Location of the Person
     try:
-        print("")
-        # talksAbout_tag = name_div.find('div', {'class': 'text-body-small t-black--light break-words pt1'})
-        # talksAbout = talksAbout_tag.find('span').get_text().strip()
+        location_section = soup.findAll('section', {'class': 'artdeco-card'})[0]
+        location = location_section.find_all('div', recursive=False)[1].find_all('div', recursive=False)[1].find_all('div',recursive=False)[1].find('span').get_text().strip()
+        print("Location: {}".format(location))
     except Exception as e:
-        print(e)
-        talksAbout = None
-
+        print("error getting location: {}".format(e))
+        location = None
 
     # TODO 소개 섹션부터 section 태그 하위에 div id가 있는데 여기 id 명이 section 명과 같다.
 
-    #
-    # # Get Location of the Person
-    # try:
-    #     location_tag = name_div.find('div', {'class': 'pb2'})
-    #     location = location_tag.find('span').get_text().strip()
-    # except:
-    #     location = None
     #
     # # Get Title of the Person
     # try:
@@ -150,15 +142,9 @@ def scraper():
     # info.append([first_last_name, title, company_link, job_title, company_name, talksAbout, location, contacts])
     # time.sleep(5)
 
-
     print("End of the program")
     browser.quit()
 
 
-
-
 if __name__ == '__main__':
     scraper()
-
-
-
