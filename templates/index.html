@@ -2,17 +2,26 @@
 {% block content %}
 
     {# container  #}
-    <div class="flex justify-center">
+    <div class="justify-center">
 
         {# title area #}
         <div class="flex justify-center ">
             <h1 class="text-6xl text-blue-500 font-bold">Linked</h1>
-            <img src="../static/image/linkedin_logo.png" alt="linkedin logo" class="w-1/12" />
+            <img src="../static/image/linkedin_logo.png" alt="linkedin logo" class="ml-1" style="height: 60px; width: auto; " />
             <h1 class="text-6xl font-bold ml-3 text-gray-600">Scraper</h1>
         </div>
 
 
         {#  input area   #}
+        <div class="mt-14 flex justify-center">
+            <form action="/scrape" method="post">
+                {% csrf_token %}
+                <label>
+                    <input type="text" name="url" placeholder="Enter linkedin profile url" class="border-2 border-blue-500 p-2 rounded-lg" style="width: 400px;" />
+                </label>
+                <button type="submit" class="bg-blue-500 text-white p-2 rounded-lg ml-1">Scrape</button>
+            </form>
+        </div>
 
 
         {#  output area   #}

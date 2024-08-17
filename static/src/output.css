@@ -1,5 +1,5 @@
 /*
-! tailwindcss v3.4.8 | MIT License | https://tailwindcss.com
+! tailwindcss v3.4.10 | MIT License | https://tailwindcss.com
 */
 
 /*
@@ -597,24 +597,20 @@ video {
   margin-right: auto;
 }
 
-.ml-3\.5 {
-  margin-left: 0.875rem;
+.ml-1 {
+  margin-left: 0.25rem;
+}
+
+.ml-3 {
+  margin-left: 0.75rem;
 }
 
 .mt-20 {
   margin-top: 5rem;
 }
 
-.ml-5 {
-  margin-left: 1.25rem;
-}
-
-.ml-7 {
-  margin-left: 1.75rem;
-}
-
-.ml-3 {
-  margin-left: 0.75rem;
+.mt-14 {
+  margin-top: 3.5rem;
 }
 
 .block {
@@ -625,20 +621,28 @@ video {
   display: flex;
 }
 
-.w-0 {
-  width: 0px;
+.w-4 {
+  width: 1rem;
 }
 
-.w-1 {
-  width: 0.25rem;
+.w-2\/3 {
+  width: 66.666667%;
 }
 
 .w-1\/4 {
   width: 25%;
 }
 
-.w-1\/12 {
-  width: 8.333333%;
+.w-2\/4 {
+  width: 50%;
+}
+
+.w-3\/4 {
+  width: 75%;
+}
+
+.w-full {
+  width: 100%;
 }
 
 .w-1\/2 {
@@ -647,6 +651,28 @@ video {
 
 .justify-center {
   justify-content: center;
+}
+
+.rounded-lg {
+  border-radius: 0.5rem;
+}
+
+.border-2 {
+  border-width: 2px;
+}
+
+.border-blue-500 {
+  --tw-border-opacity: 1;
+  border-color: rgb(59 130 246 / var(--tw-border-opacity));
+}
+
+.bg-blue-500 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(59 130 246 / var(--tw-bg-opacity));
+}
+
+.p-2 {
+  padding: 0.5rem;
 }
 
 .text-6xl {
@@ -663,12 +689,12 @@ video {
   color: rgb(59 130 246 / var(--tw-text-opacity));
 }
 
-.text-gray-500 {
-  --tw-text-opacity: 1;
-  color: rgb(107 114 128 / var(--tw-text-opacity));
-}
-
 .text-gray-600 {
   --tw-text-opacity: 1;
   color: rgb(75 85 99 / var(--tw-text-opacity));
+}
+
+.text-white {
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity));
 }
