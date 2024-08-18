@@ -91,16 +91,16 @@ def scraper():
         print("error getting location: {}".format(e))
         location = None
 
-    # TODO 소개 섹션부터 section 태그 하위에 div id가 있는데 여기 id 명이 section 명과 같다.
+    # !! 소개 섹션부터 section 태그 하위에 div id가 있는데 여기 id 명이 section 명과 같다.
 
-
-    # Get Title of the Person
+    # Get about of the Person
     try:
-        print("test")
-        # title = name_div.find('div', {'class': 'text-body-medium break-words'}).get_text().strip()
+        about_id_tag = soup.select_one("#about")
+        about = about_id_tag.parent.select_one('div:nth-child(3)').get_text().strip()
+        print("About: {}".format(about))
     except Exception as e:
-        print("error getting title: {}".format(e))
-        title = None
+        print("error getting about: {}".format(e))
+        about = None
 
     # # Get Company Link of the Person
     # try:
