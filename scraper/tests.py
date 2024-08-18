@@ -7,6 +7,7 @@ from selenium.webdriver.common.by import By
 # selenium으로 키를 조작하기 위한 import
 from selenium.webdriver.common.keys import Keys
 
+
 def chrome(headless=False):
     opt = webdriver.ChromeOptions()
     if headless:
@@ -19,7 +20,6 @@ def chrome(headless=False):
 
 
 def scraper():
-
     print("Hello World")
 
     test_url = "https://www.linkedin.com/in/suwaidaslam/"
@@ -28,7 +28,8 @@ def scraper():
     browser = chrome(False)
 
     # 로그인
-    browser.set_window_position(2048, 0)  # 우측 세컨 모니터를 이용하기 위해 왼쪽 메인 모니터 width 만큼 이동
+    # browser.set_window_position(2048, 0)  # 우측 세컨 모니터를 이용하기 위해 왼쪽 메인 모니터 width 만큼 이동
+    browser.set_window_position(0, 0)  # 우측 세컨 모니터를 이용하기 위해 왼쪽 메인 모니터 width 만큼 이동
     browser.maximize_window()
 
     browser.get('https://www.linkedin.com/uas/login')
@@ -41,13 +42,13 @@ def scraper():
     username = lines[0]
     password = lines[1]
 
-    elementID = browser.find_element(By.ID, 'username')
-    elementID.send_keys(username)
+    element_id = browser.find_element(By.ID, 'username')
+    element_id.send_keys(username)
 
-    elementID = browser.find_element(By.ID, 'password')
-    elementID.send_keys(password)
+    element_id = browser.find_element(By.ID, 'password')
+    element_id.send_keys(password)
 
-    elementID.submit()
+    element_id.submit()
 
     # 프로필 페이지로 이동
     browser.get(test_url)
@@ -92,13 +93,15 @@ def scraper():
 
     # TODO 소개 섹션부터 section 태그 하위에 div id가 있는데 여기 id 명이 section 명과 같다.
 
-    #
-    # # Get Title of the Person
-    # try:
-    #     title = name_div.find('div', {'class': 'text-body-medium break-words'}).get_text().strip()
-    # except:
-    #     title = None
-    #
+
+    # Get Title of the Person
+    try:
+        print("test")
+        # title = name_div.find('div', {'class': 'text-body-medium break-words'}).get_text().strip()
+    except Exception as e:
+        print("error getting title: {}".format(e))
+        title = None
+
     # # Get Company Link of the Person
     # try:
     #     exp_section = soup.find('section', {'id': 'experience-section'})

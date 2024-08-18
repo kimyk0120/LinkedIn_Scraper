@@ -25,7 +25,14 @@ Python 3.10.11
 tailwindcss 3.0.0
 ```
 
-# How to Run 
+## Prerequisites
+- make config/login.txt file in scaper directory and write your linkedin email and password
+```angular2html
+your_email  # first line your_email
+your_password  # second line your_password
+```
+  
+## How to Run 
 
 - Clone the repository
 - Install Requirements
