@@ -2,8 +2,6 @@
 {% block content %}
 
 
-
-
     {# container  #}
     <div class="justify-center">
 
@@ -17,44 +15,100 @@
 
         {#  input area   #}
         <div class="mt-14 flex justify-center" id="input-area">
-            <form action="" method="post">
-                {% csrf_token %}
+
+            <div style="width: 100%" class="flex justify-center">
                 <label>
-                    <input type="text" name="url" placeholder="Enter linkedin profile url"
+                    <input type="text" name="url" placeholder="Enter linkedin profile url" id="linkedin-url"
                            class="border-2 border-blue-500 p-2 rounded-lg" style="width: 400px;"/>
                 </label>
 
-{#                <button type="submit" class="bg-blue-500 text-white p-2 rounded-lg ml-1">Scrape</button>#}
+                {#  scrape button  #}
+                <button type="submit"
+                        class="bg-blue-500 text-white p-2 rounded-lg ml-1 font-semibold text-center text-base hover:bg-blue-600 focus:ring-blue-500 focus:ring-offset-blue-200 focus:outline-none"
+                        id="scrape-btn" style="padding: 0 30px;">
+                    Scrape
+                </button>
 
+                {#  processing button  #}
                 <button type="button"
-                        class="py-2 px-4 flex justify-center items-center  bg-blue-500 hover:bg-blue-700 focus:ring-blue-500 focus:ring-offset-blue-200 text-white transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg max-w-md">
-                    <svg width="20" height="20" fill="currentColor" class="mr-2 animate-spin" viewBox="0 0 1792 1792"
+                        class="py-2 px-4 flex justify-center items-center bg-blue-500 text-white transition ease-in duration-200 text-center text-base font-semibold focus:outline-none rounded-lg ml-1"
+                        style="display: none;" id="processing-btn">
+                    <svg width="20" height="20" fill="currentColor" class="mr-2 animate-spin"
+                         viewBox="0 0 1792 1792"
                          xmlns="http://www.w3.org/2000/svg">
                         <path d="M526 1394q0 53-37.5 90.5t-90.5 37.5q-52 0-90-38t-38-90q0-53 37.5-90.5t90.5-37.5 90.5 37.5 37.5 90.5zm498 206q0 53-37.5 90.5t-90.5 37.5-90.5-37.5-37.5-90.5 37.5-90.5 90.5-37.5 90.5 37.5 37.5 90.5zm-704-704q0 53-37.5 90.5t-90.5 37.5-90.5-37.5-37.5-90.5 37.5-90.5 90.5-37.5 90.5 37.5 37.5 90.5zm1202 498q0 52-38 90t-90 38q-53 0-90.5-37.5t-37.5-90.5 37.5-90.5 90.5-37.5 90.5 37.5 37.5 90.5zm-964-996q0 66-47 113t-113 47-113-47-47-113 47-113 113-47 113 47 47 113zm1170 498q0 53-37.5 90.5t-90.5 37.5-90.5-37.5-37.5-90.5 37.5-90.5 90.5-37.5 90.5 37.5 37.5 90.5zm-640-704q0 80-56 136t-136 56-136-56-56-136 56-136 136-56 136 56 56 136zm530 206q0 93-66 158.5t-158 65.5q-93 0-158.5-65.5t-65.5-158.5q0-92 65.5-158t158.5-66q92 0 158 66t66 158z">
                         </path>
                     </svg>
                     Processing
                 </button>
-
-            </form>
-        </div>
+            </div>
+        </div> <!-- end of input area -->
 
         {#  output area   #}
         <div class="mt-20 flex justify-center" id="output-area">
             <div class="border-2 border-blue-100 p-4 rounded-lg" style="width: 700px">
-                <h1 class="text-2xl font-bold text-gray-300"></h1>
+                <h1 class="text-2xl font-bold text-gray-300">
+                    Scraped Data
+                </h1>
                 <div class="mt-4">
-                    {% if output %}
-                        <p class="text-gray-600">{{ output }}</p>
-                    {% endif %}
-                    <pre id="json"></pre>
+                    <pre id="json" class="text-gray-300"></pre>
                 </div>
             </div>
         </div>
     </div> <!-- end of container -->
 
     <script>
-        var data = {
+        const scapeBtn = document.getElementById("scrape-btn");
+        const processingBtn = document.getElementById("processing-btn");
+        const jsonResult = document.getElementById("json");
+
+        {# processing btn click #}
+        document.getElementById("processing-btn").addEventListener("click", function () {
+            scapeBtn.style.display = "inline-block";
+            processingBtn.style.display = "none";
+            jsonResult.classList.remove("text-gray-600");
+            jsonResult.classList.add("text-gray-300");
+        });
+
+        {# scrape btn click #}
+        document.getElementById("scrape-btn").addEventListener("click", function () {
+            const url = document.getElementById("linkedin-url").value;
+            if (url) {
+                scapeBtn.style.display = "none";
+                processingBtn.style.display = "inline-flex";
+                fetch("/scrape", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({url: url}),
+                })
+                    .then((response) => {
+                        if(!response.ok){
+                            throw new Error(response.statusText);
+                        }
+                        response.json()
+                    })
+                    .then((data) => {
+                        scapeBtn.style.display = "inline-block";
+                        processingBtn.style.display = "none";
+                        jsonResult.textContent = JSON.stringify(data, undefined, 2);
+
+                        {# text-gray-300 to text-gray-600 #}
+                        jsonResult.classList.remove("text-gray-300");
+                        jsonResult.classList.add("text-gray-600");
+                    })
+                    .catch((error) => {
+                        scapeBtn.style.display = "inline-block";
+                        processingBtn.style.display = "none";
+                        alert(error);
+                    });
+            } else {
+                alert("Please enter linkedin profile url");
+            }
+        });
+
+        const data = {
             "data": {
                 "x": "1",
                 "y": "1",
@@ -63,8 +117,8 @@
             "event": "start",
             "show": 1,
             "id": 50
-        }
-        document.getElementById("json").textContent = JSON.stringify(data, undefined, 2);
+        };
+        jsonResult.textContent = JSON.stringify(data, undefined, 4);
     </script>
 
 {% endblock content %}
