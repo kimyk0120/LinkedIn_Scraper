@@ -243,3 +243,4 @@ cython_debug/
 .idea/
 /static/CACHE/
 /scraper/config/login.txt
+/node_modules/
