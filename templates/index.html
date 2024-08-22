@@ -25,14 +25,14 @@
                 {#  scrape button  #}
                 <button type="submit"
                         class="bg-blue-500 text-white p-2 rounded-lg ml-1 font-semibold text-center text-base hover:bg-blue-600 focus:ring-blue-500 focus:ring-offset-blue-200 focus:outline-none"
-                        id="scrape-btn" style="padding: 0 30px;">
+                        id="scrape-btn" style="padding: 0 20px;">
                     Scrape
                 </button>
 
                 {#  processing button  #}
                 <button type="button"
-                        class="py-2 px-4 flex justify-center items-center bg-blue-500 text-white transition ease-in duration-200 text-center text-base font-semibold focus:outline-none rounded-lg ml-1"
-                        style="display: none;" id="processing-btn">
+                        class="py-2 px-4 flex justify-center items-center bg-blue-300 text-white transition ease-in duration-200 text-center text-base font-semibold focus:outline-none rounded-lg ml-1"
+                        style="display: none;" id="processing-btn" disabled>
                     <svg width="20" height="20" fill="currentColor" class="mr-2 animate-spin"
                          viewBox="0 0 1792 1792"
                          xmlns="http://www.w3.org/2000/svg">
@@ -62,14 +62,6 @@
         const processingBtn = document.getElementById("processing-btn");
         const jsonResult = document.getElementById("json");
 
-        {# processing btn click #}
-        document.getElementById("processing-btn").addEventListener("click", function () {
-            scapeBtn.style.display = "inline-block";
-            processingBtn.style.display = "none";
-            jsonResult.classList.remove("text-gray-600");
-            jsonResult.classList.add("text-gray-300");
-        });
-
         {# scrape btn click #}
         document.getElementById("scrape-btn").addEventListener("click", function () {
             const url = document.getElementById("linkedin-url").value;
@@ -87,7 +79,7 @@
                         if(!response.ok){
                             throw new Error(response.statusText);
                         }
-                        response.json()
+                        return response.json()
                     })
                     .then((data) => {
                         scapeBtn.style.display = "inline-block";
