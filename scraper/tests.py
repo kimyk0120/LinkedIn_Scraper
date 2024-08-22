@@ -36,7 +36,6 @@ def scraper():
     browser.implicitly_wait(3)
 
     # 로그인 정보가 담긴 파일을 읽어서 로그인
-    # TODO 이 부분은 UI에서 어떻게 해야할지 고민 필요
     file = open('config/login.txt')  # 로그인 정보가 담긴 파일
     lines = file.readlines()
     username = lines[0]

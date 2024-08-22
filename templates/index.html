@@ -1,31 +1,70 @@
 {% extends './_base.html' %}
 {% block content %}
 
+
+
+
     {# container  #}
     <div class="justify-center">
 
         {# title area #}
-        <div class="flex justify-center ">
+        <div class="flex justify-center" id="title-area">
             <h1 class="text-6xl text-blue-500 font-bold">Linked</h1>
-            <img src="../static/image/linkedin_logo.png" alt="linkedin logo" class="ml-1" style="height: 60px; width: auto; " />
+            <img src="../static/image/linkedin_logo.png" alt="linkedin logo" class="ml-1"
+                 style="height: 60px; width: auto; "/>
             <h1 class="text-6xl font-bold ml-3 text-gray-600">Scraper</h1>
         </div>
-        
 
         {#  input area   #}
-        <div class="mt-14 flex justify-center">
-            <form action="/scrape" method="post">
+        <div class="mt-14 flex justify-center" id="input-area">
+            <form action="" method="post">
                 {% csrf_token %}
                 <label>
-                    <input type="text" name="url" placeholder="Enter linkedin profile url" class="border-2 border-blue-500 p-2 rounded-lg" style="width: 400px;" />
+                    <input type="text" name="url" placeholder="Enter linkedin profile url"
+                           class="border-2 border-blue-500 p-2 rounded-lg" style="width: 400px;"/>
                 </label>
-                <button type="submit" class="bg-blue-500 text-white p-2 rounded-lg ml-1">Scrape</button>
+
+{#                <button type="submit" class="bg-blue-500 text-white p-2 rounded-lg ml-1">Scrape</button>#}
+
+                <button type="button"
+                        class="py-2 px-4 flex justify-center items-center  bg-blue-500 hover:bg-blue-700 focus:ring-blue-500 focus:ring-offset-blue-200 text-white transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg max-w-md">
+                    <svg width="20" height="20" fill="currentColor" class="mr-2 animate-spin" viewBox="0 0 1792 1792"
+                         xmlns="http://www.w3.org/2000/svg">
+                        <path d="M526 1394q0 53-37.5 90.5t-90.5 37.5q-52 0-90-38t-38-90q0-53 37.5-90.5t90.5-37.5 90.5 37.5 37.5 90.5zm498 206q0 53-37.5 90.5t-90.5 37.5-90.5-37.5-37.5-90.5 37.5-90.5 90.5-37.5 90.5 37.5 37.5 90.5zm-704-704q0 53-37.5 90.5t-90.5 37.5-90.5-37.5-37.5-90.5 37.5-90.5 90.5-37.5 90.5 37.5 37.5 90.5zm1202 498q0 52-38 90t-90 38q-53 0-90.5-37.5t-37.5-90.5 37.5-90.5 90.5-37.5 90.5 37.5 37.5 90.5zm-964-996q0 66-47 113t-113 47-113-47-47-113 47-113 113-47 113 47 47 113zm1170 498q0 53-37.5 90.5t-90.5 37.5-90.5-37.5-37.5-90.5 37.5-90.5 90.5-37.5 90.5 37.5 37.5 90.5zm-640-704q0 80-56 136t-136 56-136-56-56-136 56-136 136-56 136 56 56 136zm530 206q0 93-66 158.5t-158 65.5q-93 0-158.5-65.5t-65.5-158.5q0-92 65.5-158t158.5-66q92 0 158 66t66 158z">
+                        </path>
+                    </svg>
+                    Processing
+                </button>
+
             </form>
         </div>
 
-
         {#  output area   #}
+        <div class="mt-20 flex justify-center" id="output-area">
+            <div class="border-2 border-blue-100 p-4 rounded-lg" style="width: 700px">
+                <h1 class="text-2xl font-bold text-gray-300"></h1>
+                <div class="mt-4">
+                    {% if output %}
+                        <p class="text-gray-600">{{ output }}</p>
+                    {% endif %}
+                    <pre id="json"></pre>
+                </div>
+            </div>
+        </div>
+    </div> <!-- end of container -->
 
+    <script>
+        var data = {
+            "data": {
+                "x": "1",
+                "y": "1",
+                "url": "http://url.com"
+            },
+            "event": "start",
+            "show": 1,
+            "id": 50
+        }
+        document.getElementById("json").textContent = JSON.stringify(data, undefined, 2);
+    </script>
 
-    </div>
 {% endblock content %}
