@@ -25,11 +25,13 @@ def chrome(headless=False):
     return browser
 
 
-def scraper():
+def scraper(scape_url=None):
     print("Hello World")
 
-    test_url = "https://www.linkedin.com/in/suwaidaslam/"
-    # test_url = "https://www.linkedin.com/in/youngkwang-kim-360739244"
+    test_url = scape_url
+    if scape_url is None:
+        test_url = "https://www.linkedin.com/in/suwaidaslam/"
+        # test_url = "https://www.linkedin.com/in/youngkwang-kim-360739244"
 
     print("Test URL: {}".format(test_url))
 
