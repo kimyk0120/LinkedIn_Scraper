@@ -62,11 +62,16 @@ def scraper():
 
         time.sleep(10)
 
+        browser.switch_to.frame(browser.find_element(By.ID, 'captcha-internal'))
         browser.switch_to.frame(0)
-        checkpoint_src = browser.page_source
-        checkpoint_soup = BeautifulSoup(checkpoint_src, 'lxml')
+        browser.switch_to.frame(0)
+        browser.switch_to.frame(0)
+        browser.switch_to.frame(0)
         element_id = browser.find_element(By.ID, 'home_children_button')
-        element_id.click()
+        element_id.click()  # 확인 버튼 -> 이후 문제가 나옴
+
+        print("문제풀기..")
+        # 그림 맞추는 문제 일 경우 -> 제목과 이미지들을 가져와서 chat gpt?? 배보다 배꼽이 더 클 듯..
 
     # 프로필 페이지로 이동
     browser.get(test_url)
