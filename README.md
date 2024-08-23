@@ -6,17 +6,16 @@
 This project is a web application that scrapes LinkedIn profiles that provide public information. 
 
 
---> intro image here
-
+<img src="./intro.png"  alt="intro"/>
 
 
 This scraper will extract publicly available data: 
 
-**🧑‍🎨 Profile:** ......name, talks about, title, location, and url
+**🧑‍🎨 Profile:** ......name, talks about, location
 
-**👨‍💼 Experiences:** ....job title, company name and job type and, company url
+**👨‍💼 Experiences:** ....job title, company name, company url
 
-**🗺️ Contact:** ... Email and Website Link
+**🗺️ Education:** ... name, period
 
 ## Stacks
 ```angular2html
@@ -26,7 +25,7 @@ tailwindcss 3.0.0
 ```
 
 ## Prerequisites
-- make config/login.txt file in scaper directory and write your linkedin email and password
+- make login_info.txt file in root directory and write your linkedin email and password
 ```angular2html
 your_email  # first line your_email
 your_password  # second line your_password
@@ -48,22 +47,6 @@ $ python manage.py runserver
 ```bash
 $ npx tailwindcss -i ./static/src/input.css -o ./static/src/output.css --watch
 ```
-
----
-
-## DONE
-- 프로젝트 init 
-- django 프로젝트 생성 및 기초 설정
-- tailwindcss 설정
-- 인덱스 페이지 디자인
-
-
-## TODO
-- 코어 로직 구현
-
-
-## Trouble Shooting
-- https://velog.io/@awo3sr/TIL-17-%ED%8C%8C%EC%9D%B4%EC%B0%B8-x-windows-949-%EC%98%A4%EB%A5%98
 
 ## Contact
 

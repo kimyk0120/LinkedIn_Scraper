@@ -30,8 +30,8 @@ def scraper(scape_url=None):
 
     test_url = scape_url
     if scape_url is None:
-        test_url = "https://www.linkedin.com/in/suwaidaslam/"
-        # test_url = "https://www.linkedin.com/in/youngkwang-kim-360739244"
+        # test_url = "https://www.linkedin.com/in/suwaidaslam/"
+        test_url = "https://www.linkedin.com/in/youngkwang-kim-360739244"
 
     print("Test URL: {}".format(test_url))
 
@@ -49,10 +49,10 @@ def scraper(scape_url=None):
     browser.implicitly_wait(3)
 
     # 로그인 정보가 담긴 파일을 읽어서 로그인
-    file = open('config/login.txt')  # 로그인 정보가 담긴 파일
-    lines = file.readlines()
-    username = lines[0]
-    password = lines[1]
+    with open("login_info.txt", "r") as f:
+        lines = f.readlines()
+        username = lines[0].strip()
+        password = lines[1].strip()
 
     element_id = browser.find_element(By.ID, 'username')
     element_id.send_keys(username)
@@ -225,9 +225,10 @@ def scraper(scape_url=None):
     print("End of the program")
     browser.quit()
 
-    # process exit
-    exit(0)
+    return json_data
 
 
 if __name__ == '__main__':
     scraper()
+    exit(0)
+
