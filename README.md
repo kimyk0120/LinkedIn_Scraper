@@ -55,11 +55,10 @@ $ npx tailwindcss -i ./static/src/input.css -o ./static/src/output.css --watch
 - 프로젝트 init 
 - django 프로젝트 생성 및 기초 설정
 - tailwindcss 설정
+- 인덱스 페이지 디자인
 
 
 ## TODO
-
-- 인덱스 페이지 디자인
 - 코어 로직 구현
 
 

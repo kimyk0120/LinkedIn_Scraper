@@ -31,7 +31,7 @@
 
                 {#  processing button  #}
                 <button type="button"
-                        class="py-2 px-4 flex justify-center items-center bg-blue-300 text-white transition ease-in duration-200 text-center text-base font-semibold focus:outline-none rounded-lg ml-1"
+                        class="py-2 px-4 flex justify-center items-center bg-blue-400 text-white transition ease-in duration-200 text-center text-base font-semibold focus:outline-none rounded-lg ml-1"
                         style="display: none;" id="processing-btn" disabled>
                     <svg width="20" height="20" fill="currentColor" class="mr-2 animate-spin"
                          viewBox="0 0 1792 1792"
@@ -61,10 +61,15 @@
         const scapeBtn = document.getElementById("scrape-btn");
         const processingBtn = document.getElementById("processing-btn");
         const jsonResult = document.getElementById("json");
+        const linkedinUrl = document.getElementById("linkedin-url");
+        
+        console.log("jsonResult", jsonResult);
 
         {# scrape btn click #}
         document.getElementById("scrape-btn").addEventListener("click", function () {
-            const url = document.getElementById("linkedin-url").value;
+            const url = linkedinUrl.value;
+            console.log("url", url);
+            
             if (url) {
                 scapeBtn.style.display = "none";
                 processingBtn.style.display = "inline-flex";
