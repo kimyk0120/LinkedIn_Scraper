@@ -22,6 +22,7 @@ This scraper will extract publicly available data:
 Django 5.0.7
 Python 3.10.11
 tailwindcss 3.0.0
+selenium 4.23.1
 ```
 
 ## Prerequisites
