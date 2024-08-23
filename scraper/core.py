@@ -3,6 +3,7 @@ import time
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.wait import WebDriverWait
 
 
 def chrome(headless=False):
@@ -15,11 +16,11 @@ def chrome(headless=False):
     opt.add_argument("disable-blink-features=AutomationControlled")  # 자동화 탐지 방지
     opt.add_experimental_option("excludeSwitches", ["enable-automation"])  # 자동화 표시 제거
     opt.add_experimental_option('useAutomationExtension', False)  # 자동화 확장 기능 사용 안 함
-    opt.add_argument(
-        "user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36")
+    # opt.add_argument(
+    #     "user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36")
 
     browser = webdriver.Chrome(options=opt)
-    browser.execute_script("Object.defineProperty(navigator, 'webdriver', {get: () => undefined})")
+    # browser.execute_script("Object.defineProperty(navigator, 'webdriver', {get: () => undefined})")
     browser.implicitly_wait(10)
     return browser
 
@@ -40,6 +41,9 @@ def scraper():
     browser.maximize_window()
 
     browser.get('https://www.linkedin.com/uas/login')
+    
+    # 아래 예시 코드로 바꿔햐 할듯
+    # element = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "username")))
     browser.implicitly_wait(3)
 
     # 로그인 정보가 담긴 파일을 읽어서 로그인
@@ -57,21 +61,25 @@ def scraper():
     element_id.submit()
 
     # if url is start with https://www.linkedin.com/checkpoint
-    if "checkpoint" in browser.current_url:  # TODO 보안인증으로 인해 ...
+    if "checkpoint" in browser.current_url:
         print("checkpoint")
 
         time.sleep(10)
 
-        browser.switch_to.frame(browser.find_element(By.ID, 'captcha-internal'))
-        browser.switch_to.frame(0)
-        browser.switch_to.frame(0)
-        browser.switch_to.frame(0)
-        browser.switch_to.frame(0)
-        element_id = browser.find_element(By.ID, 'home_children_button')
-        element_id.click()  # 확인 버튼 -> 이후 문제가 나옴
+        # 문제풀기 보안인증으로 인해
+        # 1) 그냥 문제를 푼다. headless가 아니어야함 (이거는 웹 뷰로 보여지는 것이 의미가 없어짐)
+        # wait url : https://www.linkedin.com/feed/
+        WebDriverWait(browser, 60).until(lambda x: x.current_url == "https://www.linkedin.com/feed/")
 
-        print("문제풀기..")
-        # 그림 맞추는 문제 일 경우 -> 제목과 이미지들을 가져와서 chat gpt?? 배보다 배꼽이 더 클 듯..
+        # 2) headless일때 -> 자동화로 문제를 풀어야함
+        # 그림 맞추는 문제 일 경우 -> 문제 제목과 이미지들을 가져와서 chat gpt?? 배보다 배꼽이 더 클 듯..
+        # browser.switch_to.frame(browser.find_element(By.ID, 'captcha-internal'))
+        # browser.switch_to.frame(0)
+        # browser.switch_to.frame(0)
+        # browser.switch_to.frame(0)
+        # browser.switch_to.frame(0)
+        # element_id = browser.find_element(By.ID, 'home_children_button')
+        # element_id.click()  # 확인 버튼 -> 이후 문제가 나옴
 
     # 프로필 페이지로 이동
     browser.get(test_url)
@@ -202,16 +210,15 @@ def scraper():
         education_list = None
 
     # make json
-    # json_data = {
-    #     "name": first_last_name,
-    #     "location": location,
-    #     "about": about,
-    #     "experience": experience_list,
-    #     "education": education_list
-    # }
+    json_data = {
+        "name": first_last_name,
+        "location": location,
+        "about": about,
+        "experience": experience_list,
+        "education": education_list
+    }
 
-    # info.append([first_last_name, title, company_link, job_title, company_name, talksAbout, location, contacts])
-    # time.sleep(5)
+    print("json_data: ", json_data)
 
     print("End of the program")
     browser.quit()
