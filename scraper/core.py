@@ -1,3 +1,5 @@
+import time
+
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -53,6 +55,18 @@ def scraper():
     element_id.send_keys(password)
 
     element_id.submit()
+
+    # if url is start with https://www.linkedin.com/checkpoint
+    if "checkpoint" in browser.current_url:  # TODO 보안인증으로 인해 ...
+        print("checkpoint")
+
+        time.sleep(10)
+
+        browser.switch_to.frame(0)
+        checkpoint_src = browser.page_source
+        checkpoint_soup = BeautifulSoup(checkpoint_src, 'lxml')
+        element_id = browser.find_element(By.ID, 'home_children_button')
+        element_id.click()
 
     # 프로필 페이지로 이동
     browser.get(test_url)
