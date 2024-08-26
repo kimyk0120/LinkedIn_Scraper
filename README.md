@@ -1,10 +1,11 @@
-# LinkedIn Profile Scraper 
+# LinkedIn Profile Scraper (Company option will be updating soon 🚀)
+
+[//]: # ([![forthebadge]&#40;https://forthebadge.com/images/badges/open-source.svg&#41;]&#40;https://forthebadge.com&#41;)
 
 [![forthebadge](https://forthebadge.com/images/badges/built-with-love.svg)](https://forthebadge.com)
 [![pythonbadge](https://forthebadge.com/images/badges/made-with-python.svg)](https://forthebadge.com)
 
 This project is a web application that scrapes LinkedIn profiles that provide public information. 
-
 
 <img src="./intro.png"  alt="intro"/>
 
