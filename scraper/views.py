@@ -4,6 +4,7 @@ from django.http import JsonResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from .core import person as core_person
+from .core import company_person as core_company
 
 
 # test
@@ -27,9 +28,16 @@ def scrape(request):
         print("req_json_data: ", req_json_data)
 
         url = req_json_data['url']
-        print("url: ", url)
+        select_val = req_json_data['select']
 
-        jsonData = core_person.scraper(url)
+        if not url:
+            return JsonResponse({"error": "Invalid request body"}, status=400)
+
+        if select_val == 'company':
+            jsonData = core_company.scraper(url)
+        else:
+            jsonData = core_person.scraper(url)
+
         return JsonResponse(jsonData)
     else:
         return JsonResponse({"error": "Invalid request method"}, status=400)

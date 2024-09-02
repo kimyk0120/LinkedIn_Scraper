@@ -17,22 +17,31 @@
         <div class="mt-14 flex justify-center" id="input-area">
 
             <div style="width: 100%" class="flex justify-center">
+
+                {# selectbox  #}
+                <label>
+                    <select name="select" id="select" class="border-2 border-blue-500 p-2 rounded-lg mr-1"
+                            style="width: 110px;">
+                        <option value="person">Person</option>
+                        <option value="company">Company</option>
+                    </select>
+
                 <label>
                     <input type="text" name="url" placeholder="Enter linkedin profile url" id="linkedin-url"
-                           class="border-2 border-blue-500 p-2 rounded-lg" style="width: 400px;"/>
+                           class="border-2 border-blue-500 p-2 rounded-lg" style="width: 500px;"/>
                 </label>
 
                 {#  scrape button  #}
                 <button type="submit"
-                        class="bg-blue-500 text-white p-2 rounded-lg ml-1 font-semibold text-center text-base hover:bg-blue-600 focus:ring-blue-500 focus:ring-offset-blue-200 focus:outline-none"
-                        id="scrape-btn" style="padding: 0 20px;">
+                        class="bg-blue-500 text-white p-2 rounded-lg font-semibold text-center text-base hover:bg-blue-600 focus:ring-blue-500 focus:ring-offset-blue-200 focus:outline-none"
+                        id="scrape-btn" style="padding: 0 20px; width: 100px; height: 100%; display: inline">
                     Scrape
                 </button>
 
                 {#  processing button  #}
                 <button type="button"
-                        class="py-2 px-4 flex justify-center items-center bg-blue-400 text-white transition ease-in duration-200 text-center text-base font-semibold focus:outline-none rounded-lg ml-1"
-                        style="display: none;" id="processing-btn" disabled>
+                        class="flex justify-center items-center bg-blue-400 text-white transition ease-in duration-200 text-center text-base font-semibold focus:outline-none rounded-lg ml-1"
+                        style="display: none; height: 100%; width: 130px; vertical-align: bottom;" id="processing-btn" disabled>
                     <svg width="20" height="20" fill="currentColor" class="mr-2 animate-spin"
                          viewBox="0 0 1792 1792"
                          xmlns="http://www.w3.org/2000/svg">
@@ -62,13 +71,22 @@
         const processingBtn = document.getElementById("processing-btn");
         const jsonResult = document.getElementById("json");
         const linkedinUrl = document.getElementById("linkedin-url");
+
+        // select box
+        const select = document.getElementById("select");
+        select.addEventListener("change", function () {
+            console.log("select", select.value);
+        });
         
         console.log("jsonResult", jsonResult);
 
         {# scrape btn click #}
         document.getElementById("scrape-btn").addEventListener("click", function () {
             const url = linkedinUrl.value;
+            const selectValue = select.value;
+
             console.log("url", url);
+            console.log("selectValue", selectValue);
             
             if (url) {
                 scapeBtn.style.display = "none";
@@ -78,7 +96,7 @@
                     headers: {
                         "Content-Type": "application/json",
                     },
-                    body: JSON.stringify({url: url}),
+                    body: JSON.stringify({url: url, select: selectValue}),
                 })
                     .then((response) => {
                         if(!response.ok){
