@@ -84,6 +84,9 @@ def scraper(scape_url=None):
         # element_id.click()  # 확인 버튼 -> 이후 문제가 나옴
 
     # 프로필 페이지로 이동
+    # if url is start with www -> add http://
+    if not test_url.startswith("http"):
+        test_url = "http://" + test_url
     browser.get(test_url)
     browser.implicitly_wait(1)
 

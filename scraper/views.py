@@ -3,8 +3,7 @@ import json
 from django.http import JsonResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
-
-from scraper import core
+from .core import person as core_person
 
 
 # test
@@ -30,7 +29,7 @@ def scrape(request):
         url = req_json_data['url']
         print("url: ", url)
 
-        jsonData = core.scraper(url)
+        jsonData = core_person.scraper(url)
         return JsonResponse(jsonData)
     else:
         return JsonResponse({"error": "Invalid request method"}, status=400)
