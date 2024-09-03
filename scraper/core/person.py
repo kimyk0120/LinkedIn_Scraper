@@ -1,3 +1,4 @@
+import os
 import time
 
 from bs4 import BeautifulSoup
@@ -25,7 +26,7 @@ def chrome(headless=False):
     return browser
 
 
-def scraper(scape_url=None):
+def scraper(scape_url=None, debug=False):
     print("Hello World")
 
     test_url = scape_url
@@ -43,13 +44,20 @@ def scraper(scape_url=None):
     browser.maximize_window()
 
     browser.get('https://www.linkedin.com/uas/login')
-    
+
     # 아래 예시 코드로 바꿔햐 할듯
     # element = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "username")))
     browser.implicitly_wait(3)
 
+    if debug:
+        root_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
+        os.chdir(root_path)
+        file_path = "login_info.txt"
+    else:
+        file_path = "login_info.txt"
+
     # 로그인 정보가 담긴 파일을 읽어서 로그인
-    with open("login_info.txt", "r") as f:
+    with open(file_path, "r") as f:
         lines = f.readlines()
         username = lines[0].strip()
         password = lines[1].strip()
@@ -134,6 +142,29 @@ def scraper(scape_url=None):
         print("error getting location: {}".format(e))
         location = None
 
+    # Get Email of the Person
+    try:
+        email_section = soup.findAll('section', {'class': 'artdeco-card'})[0]
+        email_span = \
+            email_section.find_all('div', recursive=False)[1].find_all('div', recursive=False)[1].find_all('div', recursive=False)[1].find_all('span')
+
+        if email_span is not None and len(email_span) > 1:
+            email_pop_btn = email_span[1].find('a')
+
+            # scroll to top
+            browser.execute_script("window.scrollTo(0, 0);")
+            browser.find_element(By.ID, email_pop_btn['id']).click()
+            time.sleep(1)
+            addpop_src = browser.page_source
+            soup_pop = BeautifulSoup(addpop_src, 'lxml')
+            modal = soup_pop.find("div", {'class': 'artdeco-modal'})
+            email = modal.find_all("div", recursive=False)[1].find("section").find("div").find_all("section", recursive=False)[3].find("a").get_text().strip()
+            print("Email: {}".format(email))
+
+    except Exception as e:
+        print("error getting location: {}".format(e))
+        email = None
+
     # !! 소개 섹션부터 section 태그 하위에 div id가 있는데 여기 id 명이 section 명과 같다.
 
     # Get about of the Person
@@ -217,10 +248,11 @@ def scraper(scape_url=None):
     # make json
     json_data = {
         "name": first_last_name,
+        "email": email,
         "location": location,
         "about": about,
         "experience": experience_list,
-        "education": education_list
+        "education": education_list,
     }
 
     print("json_data: ", json_data)
@@ -232,6 +264,5 @@ def scraper(scape_url=None):
 
 
 if __name__ == '__main__':
-    scraper()
+    scraper(debug=True)
     exit(0)
-

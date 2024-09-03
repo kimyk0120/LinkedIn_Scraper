@@ -12,7 +12,7 @@ This project is a web application that scrapes LinkedIn profiles that provide pu
 
 This scraper will extract publicly available data: 
 
-**🧑‍🎨 Profile:** ......name, talks about, location
+**🧑‍🎨 Profile:** ......name, email, talks about, location
 
 **👨‍💼 Experiences:** ....job title, company name, company url
 
