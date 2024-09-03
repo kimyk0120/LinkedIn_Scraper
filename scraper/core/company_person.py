@@ -25,7 +25,12 @@ def chrome(headless=False):
     return browser
 
 
-def scraper(scape_url=None):
+def scraper_from_company(scape_url=None):
+    # 컴퍼니의 무한 스크롤 페이징이 끝까지 도달하게 한다.
+    # 컴퍼니의 사람들의 url을 수집한다.
+    # 각 사람들의 url로 이동하여 정보를 수집한다.
+    # 수집한 정보를 json으로 저장하여 리턴.
+
     print("Hello World")
 
     test_url = scape_url
@@ -232,6 +237,6 @@ def scraper(scape_url=None):
 
 
 if __name__ == '__main__':
-    scraper()
+    scraper_from_company()
     exit(0)
 
