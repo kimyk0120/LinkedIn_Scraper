@@ -35,8 +35,8 @@ def scraper(scape_url=None, debug=False, loged_browser=None, ops_quit=True):
     test_url = scape_url
     if scape_url is None:
         # test_url = "https://www.linkedin.com/in/suwaidaslam/"
-        # test_url = "https://www.linkedin.com/in/youngkwang-kim-360739244"
-        test_url = "https://www.linkedin.com/in/seonwoo-y-15352a260/"
+        test_url = "https://www.linkedin.com/in/youngkwang-kim-360739244"
+        # test_url = "https://www.linkedin.com/in/seonwoo-y-15352a260/"
 
     print("Test URL: {}".format(test_url))
 
@@ -172,12 +172,13 @@ def scraper(scape_url=None, debug=False, loged_browser=None, ops_quit=True):
                                                                                                          recursive=False)
 
             for section_li in section_lis:
-                # if email expression
-                a_tag_text = section_li.find("a").get_text().strip()
-                if re.match(email_regex, a_tag_text):
-                    email = a_tag_text
-                    print("Email: {}".format(email))
-                    break
+                if section_li.find("a") is not None:
+                    # if email expression
+                    a_tag_text = section_li.find("a").get_text().strip()
+                    if re.match(email_regex, a_tag_text):
+                        email = a_tag_text
+                        print("Email: {}".format(email))
+                        break
 
     except Exception as e:
         print("error getting location: {}".format(e))
