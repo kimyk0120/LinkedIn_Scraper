@@ -1,4 +1,4 @@
-# LinkedIn Profile Scraper (Company option will be updating soon 🚀)
+# LinkedIn Profile Scraper
 
 [//]: # ([![forthebadge]&#40;https://forthebadge.com/images/badges/open-source.svg&#41;]&#40;https://forthebadge.com&#41;)
 
@@ -17,6 +17,13 @@ This scraper will extract publicly available data:
 **👨‍💼 Experiences:** ....job title, company name, company url
 
 **🗺️ Education:** ... name, period
+
+---
+
+## Updated Features
+2024.09.04
+  - **Company Search:** You can search for a company and get all the employees' information.
+
 
 ## Stacks
 ```angular2html

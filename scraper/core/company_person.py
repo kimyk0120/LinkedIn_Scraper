@@ -40,8 +40,8 @@ def scraper_from_company(scape_url=None, debug=False):
 
     test_url = scape_url
     if scape_url is None:
-        test_url = "https://www.linkedin.com/company/sweetk/people/"
-        # test_url = "https://www.linkedin.com/company/dktechin/people/"
+        # test_url = "https://www.linkedin.com/company/sweetk/people/"
+        test_url = "https://www.linkedin.com/company/dktechin/people/"
         # test_url = "https://www.linkedin.com/company/highspot/people/"
 
     print("Test URL: {}".format(test_url))
@@ -142,18 +142,25 @@ def scraper_from_company(scape_url=None, debug=False):
         print("error getting person list: {}".format(e))
         return None
 
+
+    result_json = {}
+
     # get person info
     for person_url in person_urls:
-        print("person url: {}".format(person_url))
-        person_json = person.scraper(person_url)
-        print("Test")
 
+        # print("person url: {}".format(person_url))
+        person_json = person.scraper(scape_url=person_url, loged_browser=browser, ops_quit=False)
+        if person_json is None:
+            continue
 
+        # add person_url into person_json
+        person_json["person_url"] = person_url
+        result_json[person_json['name']] = person_json
 
     print("End of the program")
     browser.quit()
 
-    return None
+    return result_json
 
 
 if __name__ == '__main__':

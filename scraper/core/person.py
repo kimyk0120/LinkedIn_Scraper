@@ -1,10 +1,13 @@
 import os
+import re
 import time
 
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
+
+email_regex = r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'
 
 
 def chrome(headless=False):
@@ -26,7 +29,7 @@ def chrome(headless=False):
     return browser
 
 
-def scraper(scape_url=None, debug=False):
+def scraper(scape_url=None, debug=False, loged_browser=None, ops_quit=True):
     print("Hello World")
 
     test_url = scape_url
@@ -37,60 +40,63 @@ def scraper(scape_url=None, debug=False):
 
     print("Test URL: {}".format(test_url))
 
-    browser = chrome(headless=False)
-
-    # 로그인
-    # browser.set_window_position(2048, 0)  # 우측 세컨 모니터를 이용하기 위해 왼쪽 메인 모니터 width 만큼 이동
-    browser.set_window_position(0, 0)  # 우측 세컨 모니터를 이용하기 위해 왼쪽 메인 모니터 width 만큼 이동
-    browser.maximize_window()
-
-    browser.get('https://www.linkedin.com/uas/login')
-
-    # 아래 예시 코드로 바꿔햐 할듯
-    # element = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "username")))
-    browser.implicitly_wait(3)
-
-    if debug:
-        root_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
-        os.chdir(root_path)
-        file_path = "login_info.txt"
+    if loged_browser is not None:
+        browser = loged_browser
     else:
-        file_path = "login_info.txt"
+        browser = chrome(headless=False)
 
-    # 로그인 정보가 담긴 파일을 읽어서 로그인
-    with open(file_path, "r") as f:
-        lines = f.readlines()
-        username = lines[0].strip()
-        password = lines[1].strip()
+        # 로그인
+        # browser.set_window_position(2048, 0)  # 우측 세컨 모니터를 이용하기 위해 왼쪽 메인 모니터 width 만큼 이동
+        browser.set_window_position(0, 0)  # 우측 세컨 모니터를 이용하기 위해 왼쪽 메인 모니터 width 만큼 이동
+        browser.maximize_window()
 
-    element_id = browser.find_element(By.ID, 'username')
-    element_id.send_keys(username)
+        browser.get('https://www.linkedin.com/uas/login')
 
-    element_id = browser.find_element(By.ID, 'password')
-    element_id.send_keys(password)
+        # 아래 예시 코드로 바꿔햐 할듯
+        # element = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "username")))
+        browser.implicitly_wait(3)
 
-    element_id.submit()
+        if debug:
+            root_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
+            os.chdir(root_path)
+            file_path = "login_info.txt"
+        else:
+            file_path = "login_info.txt"
 
-    # if url is start with https://www.linkedin.com/checkpoint
-    if "checkpoint" in browser.current_url:
-        print("checkpoint")
+        # 로그인 정보가 담긴 파일을 읽어서 로그인
+        with open(file_path, "r") as f:
+            lines = f.readlines()
+            username = lines[0].strip()
+            password = lines[1].strip()
 
-        time.sleep(10)
+        element_id = browser.find_element(By.ID, 'username')
+        element_id.send_keys(username)
 
-        # 문제풀기 보안인증으로 인해
-        # 1) 그냥 문제를 푼다. headless가 아니어야함 (이거는 웹 뷰로 보여지는 것이 의미가 없어짐)
-        # wait url : https://www.linkedin.com/feed/
-        WebDriverWait(browser, 60).until(lambda x: x.current_url == "https://www.linkedin.com/feed/")
+        element_id = browser.find_element(By.ID, 'password')
+        element_id.send_keys(password)
 
-        # 2) headless일때 -> 자동화로 문제를 풀어야함
-        # 그림 맞추는 문제 일 경우 -> 문제 제목과 이미지들을 가져와서 chat gpt?? 배보다 배꼽이 더 클 듯..
-        # browser.switch_to.frame(browser.find_element(By.ID, 'captcha-internal'))
-        # browser.switch_to.frame(0)
-        # browser.switch_to.frame(0)
-        # browser.switch_to.frame(0)
-        # browser.switch_to.frame(0)
-        # element_id = browser.find_element(By.ID, 'home_children_button')
-        # element_id.click()  # 확인 버튼 -> 이후 문제가 나옴
+        element_id.submit()
+
+        # if url is start with https://www.linkedin.com/checkpoint
+        if "checkpoint" in browser.current_url:
+            print("checkpoint")
+
+            time.sleep(10)
+
+            # 문제풀기 보안인증으로 인해
+            # 1) 그냥 문제를 푼다. headless가 아니어야함 (이거는 웹 뷰로 보여지는 것이 의미가 없어짐)
+            # wait url : https://www.linkedin.com/feed/
+            WebDriverWait(browser, 60).until(lambda x: x.current_url == "https://www.linkedin.com/feed/")
+
+            # 2) headless일때 -> 자동화로 문제를 풀어야함
+            # 그림 맞추는 문제 일 경우 -> 문제 제목과 이미지들을 가져와서 chat gpt?? 배보다 배꼽이 더 클 듯..
+            # browser.switch_to.frame(browser.find_element(By.ID, 'captcha-internal'))
+            # browser.switch_to.frame(0)
+            # browser.switch_to.frame(0)
+            # browser.switch_to.frame(0)
+            # browser.switch_to.frame(0)
+            # element_id = browser.find_element(By.ID, 'home_children_button')
+            # element_id.click()  # 확인 버튼 -> 이후 문제가 나옴
 
     # 프로필 페이지로 이동
     # if url is start with www -> add http://
@@ -145,9 +151,12 @@ def scraper(scape_url=None, debug=False):
 
     # Get Email of the Person
     try:
+        email = None
         email_section = soup.findAll('section', {'class': 'artdeco-card'})[0]
         email_span = \
-            email_section.find_all('div', recursive=False)[1].find_all('div', recursive=False)[1].find_all('div', recursive=False)[1].find_all('span')
+            email_section.find_all('div', recursive=False)[1].find_all('div', recursive=False)[1].find_all('div',
+                                                                                                           recursive=False)[
+                1].find_all('span')
 
         if email_span is not None and len(email_span) > 1:
             email_pop_btn = email_span[1].find('a')
@@ -159,8 +168,16 @@ def scraper(scape_url=None, debug=False):
             addpop_src = browser.page_source
             soup_pop = BeautifulSoup(addpop_src, 'lxml')
             modal = soup_pop.find("div", {'class': 'artdeco-modal'})
-            email = modal.find_all("div", recursive=False)[1].find("section").find("div").find_all("section", recursive=False)[3].find("a").get_text().strip()
-            print("Email: {}".format(email))
+            section_lis = modal.find_all("div", recursive=False)[1].find("section").find("div").find_all("section",
+                                                                                                         recursive=False)
+
+            for section_li in section_lis:
+                # if email expression
+                a_tag_text = section_li.find("a").get_text().strip()
+                if re.match(email_regex, a_tag_text):
+                    email = a_tag_text
+                    print("Email: {}".format(email))
+                    break
 
     except Exception as e:
         print("error getting location: {}".format(e))
@@ -259,7 +276,8 @@ def scraper(scape_url=None, debug=False):
     print("json_data: ", json_data)
 
     print("End of the program")
-    browser.quit()
+    if ops_quit:
+        browser.quit()
 
     return json_data
 
