@@ -32,7 +32,8 @@ def scraper(scape_url=None, debug=False):
     test_url = scape_url
     if scape_url is None:
         # test_url = "https://www.linkedin.com/in/suwaidaslam/"
-        test_url = "https://www.linkedin.com/in/youngkwang-kim-360739244"
+        # test_url = "https://www.linkedin.com/in/youngkwang-kim-360739244"
+        test_url = "https://www.linkedin.com/in/seonwoo-y-15352a260/"
 
     print("Test URL: {}".format(test_url))
 

@@ -1,10 +1,14 @@
+import os
 import time
-from telnetlib import EC
 
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+
+
+import person
 
 
 def chrome(headless=False):
@@ -36,9 +40,9 @@ def scraper_from_company(scape_url=None, debug=False):
 
     test_url = scape_url
     if scape_url is None:
-        # https://www.linkedin.com/company/dktechin/people/
-        # https://www.linkedin.com/company/highspot/people/
-        test_url = "https://www.linkedin.com/company/dktechin/people/"
+        test_url = "https://www.linkedin.com/company/sweetk/people/"
+        # test_url = "https://www.linkedin.com/company/dktechin/people/"
+        # test_url = "https://www.linkedin.com/company/highspot/people/"
 
     print("Test URL: {}".format(test_url))
 
@@ -52,11 +56,18 @@ def scraper_from_company(scape_url=None, debug=False):
     browser.get('https://www.linkedin.com/uas/login')
     
     # 아래 예시 코드로 바꿔햐 할듯
-    # element = WebDriverWait(browser, 10).until(EC.presence_of_element_located((By.ID, "username")))
-    browser.implicitly_wait(3)
+    element = WebDriverWait(browser, 10).until(EC.presence_of_element_located((By.ID, "username")))
+    # browser.implicitly_wait(3)
+
+    if debug:
+        root_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
+        os.chdir(root_path)
+        file_path = "login_info.txt"
+    else:
+        file_path = "login_info.txt"
 
     # 로그인 정보가 담긴 파일을 읽어서 로그인
-    with open("login_info.txt", "r") as f:
+    with open(file_path, "r") as f:
         lines = f.readlines()
         username = lines[0].strip()
         password = lines[1].strip()
@@ -108,10 +119,34 @@ def scraper_from_company(scape_url=None, debug=False):
                 print("error scrolling down: {}".format(e))
                 break
 
+        print("scroll end page")
+
     scroll_down_page(8)
 
     src = browser.page_source
     soup = BeautifulSoup(src, 'lxml')
+
+
+    # get person list
+    person_urls = []
+    try:
+        element_lis = soup.find("div", {"class": "org-people-profile-card__card-spacing"}).find("ul").find_all("li", recursive=False)
+
+        # get person url : check exist a tag
+        for element_li in element_lis:
+            a_tag = element_li.find("a")
+            if a_tag is not None:
+                person_urls.append(a_tag['href'])
+        print("person urls: {}".format(person_urls))
+    except Exception as e:
+        print("error getting person list: {}".format(e))
+        return None
+
+    # get person info
+    for person_url in person_urls:
+        print("person url: {}".format(person_url))
+        person_json = person.scraper(person_url)
+        print("Test")
 
 
 
