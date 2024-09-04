@@ -34,7 +34,7 @@ def scrape(request):
             return JsonResponse({"error": "Invalid request body"}, status=400)
 
         if select_val == 'company':
-            jsonData = core_company.scraper(url)
+            jsonData = core_company.scraper_from_company(url)
         else:
             jsonData = core_person.scraper(url)
 
