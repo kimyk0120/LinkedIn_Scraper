@@ -33,7 +33,7 @@
 
                 {#  scrape button  #}
                 <button type="submit"
-                        class="bg-blue-500 text-white p-2 rounded-lg font-semibold text-center text-base hover:bg-blue-600 focus:ring-blue-500 focus:ring-offset-blue-200 focus:outline-none"
+                        class="ml-1 bg-blue-500 text-white p-2 rounded-lg font-semibold text-center text-base hover:bg-blue-600 focus:ring-blue-500 focus:ring-offset-blue-200 focus:outline-none"
                         id="scrape-btn" style="padding: 0 20px; width: 100px; height: 100%; display: inline">
                     Scrape
                 </button>
@@ -41,7 +41,8 @@
                 {#  processing button  #}
                 <button type="button"
                         class="flex justify-center items-center bg-blue-400 text-white transition ease-in duration-200 text-center text-base font-semibold focus:outline-none rounded-lg ml-1"
-                        style="display: none; height: 100%; width: 130px; vertical-align: bottom;" id="processing-btn" disabled>
+                        style="display: none; height: 100%; width: 130px; vertical-align: bottom;" id="processing-btn"
+                        disabled>
                     <svg width="20" height="20" fill="currentColor" class="mr-2 animate-spin"
                          viewBox="0 0 1792 1792"
                          xmlns="http://www.w3.org/2000/svg">
@@ -55,15 +56,19 @@
 
         {#  output area   #}
         <div class="mt-20 flex justify-center" id="output-area">
-            <div class="border-2 border-blue-100 p-4 rounded-lg" style="width: 700px; max-height: 500px; overflow: auto;">
-                <h1 class="text-2xl font-bold text-gray-300">
-                    Scraped Data
-                </h1>
+            <div class="border-2 border-blue-100 p-4 rounded-lg"
+                 style="width: 700px; max-height: 500px; overflow: auto;">
+                <div class="flex">
+                    <h1 class="text-2xl font-bold text-gray-300 ">Scraped Data</h1>
+                    {#  file download #}
+                    <a id="file-down-btn" class="text-sm text-blue-500 ml-auto float-end disabled:text-slate-500 align-top">Download</a>
+                </div>
                 <div class="mt-4">
                     <pre id="json" class="text-gray-300 whitespace-pre-wrap"></pre>
                 </div>
             </div>
         </div>
+
     </div> <!-- end of container -->
 
     <script>
@@ -77,7 +82,7 @@
         select.addEventListener("change", function () {
             console.log("select", select.value);
         });
-        
+
         console.log("jsonResult", jsonResult);
 
         {# scrape btn click #}
@@ -87,7 +92,7 @@
 
             console.log("url", url);
             console.log("selectValue", selectValue);
-            
+
             if (url) {
                 scapeBtn.style.display = "none";
                 processingBtn.style.display = "inline-flex";
@@ -99,7 +104,7 @@
                     body: JSON.stringify({url: url, select: selectValue}),
                 })
                     .then((response) => {
-                        if(!response.ok){
+                        if (!response.ok) {
                             throw new Error(response.statusText);
                         }
                         return response.json()
@@ -134,6 +139,16 @@
             "id": 50
         };
         jsonResult.textContent = JSON.stringify(data, undefined, 4);
+
+        {# down btn click #}
+        const dlAnchorElem = document.getElementById('file-down-btn').addEventListener("click", function () {
+            const download_data = JSON.parse(jsonResult.textContent);
+            console.log("download_data", download_data);
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(download_data, null, 2));
+            this.setAttribute("href", dataStr);
+            this.setAttribute("download", "output.json");
+        });
+
     </script>
 
 {% endblock content %}
