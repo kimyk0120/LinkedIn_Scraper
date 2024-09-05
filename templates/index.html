@@ -58,11 +58,12 @@
         <div class="mt-20 flex justify-center" id="output-area">
             <div class="border-2 border-blue-100 p-4 rounded-lg"
                  style="width: 700px; max-height: 500px; overflow: auto;">
-                <div class="flex">
-                    <h1 class="text-2xl font-bold text-gray-300 ">Scraped Data</h1>
-                    {#  file download #}
-                    <a id="file-down-btn" class="text-sm text-blue-500 ml-auto float-end disabled:text-slate-500 align-top">Download</a>
-                </div>
+
+                <a id="file-down-btn"
+                   class="underline text-sm text-blue-500 ml-auto float-end disabled:text-slate-500 align-top relative"
+                   style="top:-0.7rem;">Download</a>
+
+                <h1 class="text-2xl font-bold text-gray-300 ">Scraped Data</h1>
                 <div class="mt-4">
                     <pre id="json" class="text-gray-300 whitespace-pre-wrap"></pre>
                 </div>
