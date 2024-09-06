@@ -1,4 +1,5 @@
 import os
+import random
 import time
 
 from bs4 import BeautifulSoup
@@ -6,7 +7,6 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-
 
 from scraper.core import person
 
@@ -54,7 +54,7 @@ def scraper_from_company(scape_url=None, debug=False):
     browser.maximize_window()
 
     browser.get('https://www.linkedin.com/uas/login')
-    
+
     # 아래 예시 코드로 바꿔햐 할듯
     element = WebDriverWait(browser, 10).until(EC.presence_of_element_located((By.ID, "username")))
     # browser.implicitly_wait(3)
@@ -108,6 +108,9 @@ def scraper_from_company(scape_url=None, debug=False):
     browser.get(test_url)
     browser.implicitly_wait(1)
 
+    # 무작위 지연 시간 (0~3초)
+    time.sleep(random.uniform(0, 3))
+
     def scroll_down_page(speed=8):
         current_scroll_position, new_height = 0, 1
         while current_scroll_position <= new_height:
@@ -126,11 +129,11 @@ def scraper_from_company(scape_url=None, debug=False):
     src = browser.page_source
     soup = BeautifulSoup(src, 'lxml')
 
-
     # get person list
     person_urls = []
     try:
-        element_lis = soup.find("div", {"class": "org-people-profile-card__card-spacing"}).find("ul").find_all("li", recursive=False)
+        element_lis = soup.find("div", {"class": "org-people-profile-card__card-spacing"}).find("ul").find_all("li",
+                                                                                                               recursive=False)
 
         # get person url : check exist a tag
         for element_li in element_lis:
@@ -141,7 +144,6 @@ def scraper_from_company(scape_url=None, debug=False):
     except Exception as e:
         print("error getting person list: {}".format(e))
         return None
-
 
     result_json = {}
 
@@ -166,4 +168,3 @@ def scraper_from_company(scape_url=None, debug=False):
 if __name__ == '__main__':
     scraper_from_company(debug=True)
     exit(0)
-
