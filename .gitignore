@@ -246,3 +246,4 @@ cython_debug/
 /node_modules/
 /login_info.txt
 /scraper/core/login_info.txt
+/output/**

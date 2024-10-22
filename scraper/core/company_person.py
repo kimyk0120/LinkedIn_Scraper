@@ -1,8 +1,10 @@
+import json
 import os
 import random
 import time
 
 from bs4 import BeautifulSoup
+from numpy.f2py.auxfuncs import throw_error
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
@@ -39,10 +41,8 @@ def scraper_from_company(scape_url=None, debug=False):
     print("Hello World")
 
     test_url = scape_url
-    if scape_url is None:
-        # test_url = "https://www.linkedin.com/company/sweetk/people/"
-        test_url = "https://www.linkedin.com/company/dktechin/people/"
-        # test_url = "https://www.linkedin.com/company/highspot/people/"
+    if test_url is None:
+        throw_error("scrape url is None")
 
     print("Test URL: {}".format(test_url))
 
@@ -166,8 +166,21 @@ def scraper_from_company(scape_url=None, debug=False):
 
 
 if __name__ == '__main__':
-    result_json = scraper_from_company(debug=True)
-    # write json file
-    with open('../../output/result.json', 'w', encoding='utf-8') as f:
-        f.write(str(result_json))
+
+    test_url = "https://www.linkedin.com/company/nalbi/people/"
+    # test_url = "https://www.linkedin.com/company/dktechin/people/"
+    # test_url = "https://www.linkedin.com/company/highspot/people/"
+
+    result_json = scraper_from_company(scape_url=test_url, debug=True)
+
+    # Ensure the output directory exists
+    output_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', 'output'))
+    os.makedirs(output_dir, exist_ok=True)
+
+    # Write json file
+    output_file = os.path.join(output_dir, 'result.json')
+    with open(output_file, 'w', encoding='utf-8') as json_file:
+        # noinspection PyTypeChecker
+        json.dump(result_json, json_file, ensure_ascii=False, indent=4)
+
     exit(0)
