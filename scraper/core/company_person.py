@@ -145,7 +145,7 @@ def scraper_from_company(scape_url=None, debug=False):
         print("error getting person list: {}".format(e))
         return None
 
-    result_json = {}
+    result_json = []
 
     # get person info
     for person_url in person_urls:
@@ -157,7 +157,7 @@ def scraper_from_company(scape_url=None, debug=False):
 
         # add person_url into person_json
         person_json["person_url"] = person_url
-        result_json[person_json['name']] = person_json
+        result_json.append(person_json)
 
     print("End of the program")
     browser.quit()
