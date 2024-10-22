@@ -235,7 +235,7 @@ def scraper(scape_url=None, debug=False, loged_browser=None, ops_quit=True):
         print("Experience: {}".format(experience_list))
 
     except Exception as e:
-        print("error getting about: {}".format(e))
+        print("error getting Experience: {}".format(e))
         experience_list = None
 
     # Get Education of the Person

@@ -166,5 +166,8 @@ def scraper_from_company(scape_url=None, debug=False):
 
 
 if __name__ == '__main__':
-    scraper_from_company(debug=True)
+    result_json = scraper_from_company(debug=True)
+    # write json file
+    with open('../../output/result.json', 'w', encoding='utf-8') as f:
+        f.write(str(result_json))
     exit(0)
